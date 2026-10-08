@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Invoice</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f5f5f5;
+        color: #333;
+      }
+      .invoice-container {
+        width: 210mm; /* A4 width minus margin */
+        height: 297mm;
+        margin: 15mm auto; /* A4 top/bottom margin */
+        background-color: #fff;
+        padding: 15mm; /* A4 inner padding */
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        box-sizing: border-box;
+        position: relative;
+      }
+      .support-number {
+        text-align: center;
+        margin: 30px 0;
+        font-size: 20px;
+        color: #ffc200;
+        font-weight: bold;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+      }
+      .footer {
+        text-align: center;
+        margin-top: 20px;
+        font-size: 12px;
+        color: #777;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="invoice-container">
+      <div
+        style="
+          width: 100%;
+          padding: 10px;
+          background-color: #f5f5f5;
+          border-bottom: 1px solid #ddd;
+          text-align: center;
+          font-family: Arial, sans-serif;
+          margin-bottom: 20px;
+        "
+      >
+        <div
+          style="
+            display: inline-block;
+            width: 100%;
+            background-color: #ffffff;
+            border: 1px solid #ffc200;
+          "
+        >
+          <table style="width: 100%; border-collapse: collapse">
+            <tr>
+              <td
+                style="
+                  text-align: center;
+                  color: #242e39;
+                  padding: 10px;
+                  border-right: 1px solid #ddd;
+                  font-weight: bold;
+                  background-color: #f0f0f0;
+                "
+              >
+                <img
+                  src="data:image/png;base64,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"
+                  alt="Norton Logo"
+                  style="max-width: 100px; vertical-align: middle"
+                />
+              </td>
+              <td
+                style="
+                  text-align: center;
+                  font-size: 16px;
+                  color: #242e39;
+                  padding: 10px;
+                  border-right: 1px solid #ddd;
+                "
+              >
+                Invoice <br />$invoice_no
+              </td>
+              <td
+                style="
+                  text-align: center;
+                  font-size: 16px;
+                  color: #242e39;
+                  padding: 10px;
+                  border-right: 1px solid #ddd;
+                "
+              >
+                $date
+              </td>
+              <td
+                colspan="2"
+                style="
+                  text-align: center;
+                  font-size: 20px;
+                  color: #242e39;
+                  padding: 15px;
+                  font-weight: bold;
+                  background-color: #f0f0f0;
+                  border-top: 1px solid #ddd;
+                  border-bottom: 1px solid #ddd;
+                "
+              >
+                <span style="display: block; padding-bottom: 5px">
+                  <span style="color: #000000; font-size: 16px"
+                    >Technical Support:</span
+                  ><br />
+                  $tfn
+                </span>
+              </td>
+              <td style="text-align: center; padding: 10px">
+                <a
+                  style="
+                    display: inline-block;
+                    text-decoration: none;
+                    color: #ffffff;
+                    padding: 8px 20px;
+                    font-size: 14px;
+                    font-weight: bold;
+                    background-color: #242e39;
+                  "
+                  >Purchased</a
+                >
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
+
+      <div style="font-family: Arial, sans-serif; margin-bottom: 20px">
+        <div style="font-family: Arial, sans-serif; margin-bottom: 20px">
+          <!-- Order details header -->
+          <p
+            style="
+              font-size: 18px;
+              font-weight: bold;
+              color: #ffc200;
+              margin-bottom: 10px;
+            "
+          >
+            Find Your Order Details Below:
+          </p>
+
+          <!-- First table for item details -->
+          <table
+            style="
+              width: 100%;
+              border-collapse: collapse;
+              border: 2px dotted #ffc200; /* Dotted border */
+              border-radius: 5px;
+              margin-bottom: 15px;
+              box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            "
+          >
+            <thead style="background-color: #ffc200; color: #242e39">
+              <tr>
+                <th
+                  style="
+                    padding: 15px;
+                    text-align: left;
+                    border-right: 2px dotted white; /* Dotted border */
+                    border-bottom: 1px solid #ccc;
+                  "
+                >
+                  Item
+                </th>
+                <th
+                  style="
+                    padding: 15px;
+                    text-align: right;
+                    border-right: 2px dotted white; /* Dotted border */
+                    border-bottom: 1px solid #ccc;
+                  "
+                >
+                  Description
+                </th>
+                <th
+                  style="
+                    padding: 15px;
+                    text-align: left;
+                    border-right: 2px dotted white; /* Dotted border */
+                    border-bottom: 1px solid #ccc;
+                  "
+                >
+                  Price
+                </th>
+                <th
+                  style="
+                    padding: 15px;
+                    text-align: left;
+                    border-right: 2px dotted white; /* Dotted border */
+                    border-bottom: 1px solid #ccc;
+                  "
+                >
+                  Quantity
+                </th>
+                <th
+                  style="
+                    padding: 15px;
+                    text-align: left;
+                    border-bottom: 1px solid #ccc;
+                  "
+                >
+                  Total
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style="padding: 15px">Norton LifeLock</td>
+                <td style="padding: 15px; text-align: right">
+                  1 Year Subscription
+                </td>
+                <td style="padding: 15px">$3$charge.00</td>
+                <td style="padding: 15px">1</td>
+                <td style="padding: 15px">$3$charge.00</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <!-- Second table for payment details -->
+          <table
+            style="
+              width: 100%;
+              border-collapse: collapse;
+              border: 2px dotted #ffc200; /* Dotted border */
+              border-radius: 5px;
+              box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            "
+          >
+            <thead style="background-color: #ffc200; color: #242e39">
+              <tr>
+                <th
+                  style="
+                    padding: 15px;
+                    text-align: left;
+                    border-right: 2px dotted white; /* Dotted border */
+                    border-bottom: 1px solid #ccc;
+                  "
+                >
+                  &#8203;
+                </th>
+                <th
+                  style="
+                    padding: 15px;
+                    text-align: right;
+                    border-right: 2px dotted white; /* Dotted border */
+                    border-bottom: 1px solid #ccc;
+                  "
+                >
+                  &#8203;
+                </th>
+                <th
+                  style="
+                    padding: 15px;
+                    text-align: left;
+                    border-right: 2px dotted white; /* Dotted border */
+                    border-bottom: 1px solid #ccc;
+                  "
+                >
+                  &#8203;
+                </th>
+                <th
+                  style="
+                    padding: 15px;
+                    text-align: left;
+                    border-right: 2px dotted white; /* Dotted border */
+                    border-bottom: 1px solid #ccc;
+                  "
+                >
+                  &#8203;
+                </th>
+                <th
+                  style="
+                    padding: 15px;
+                    text-align: left;
+                    border-bottom: 1px solid #ccc;
+                  "
+                >
+                  Price
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style="padding: 15px">
+                  <b>Payment Method : <span style="color: #0191E7; font-weight: bold; font-style: italic">PayPal Credit</span></b>
+                </td>
+                <td style="padding: 15px; text-align: right">&#8203;</td>
+                <td style="padding: 15px">&#8203;</td>
+                <td style="padding: 15px">&#8203;</td>
+                <td style="padding: 15px; font-weight: bold">
+                  Sub-Total: $3$charge.00
+                </td>
+              </tr>
+
+              <tr>
+                <td style="padding: 15px">&#8203;</td>
+                <td style="padding: 15px; text-align: right">&#8203;</td>
+                <td style="padding: 15px">&#8203;</td>
+                <td style="padding: 15px">&#8203;</td>
+                <td style="padding: 15px; font-weight: bold">
+                  <b>Total: $3$charge.00</b>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div
+        style="
+          font-family: Arial, sans-serif;
+          border: 2px solid #ffc200; /* Border color */
+          border-radius: 5px; /* Rounded corners */
+          padding: 20px; /* Padding inside the div */
+          margin-bottom: 20px; /* Margin for spacing */
+          box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow for 3D effect */
+        "
+      >
+        <p
+          style="
+            font-size: 18px; /* Larger font size for the greeting */
+            font-weight: bold; /* Bold text for emphasis */
+            color: #242e39; /* Norton Yellow for header */
+            margin-bottom: 10px; /* Margin below the greeting */
+          "
+        >
+          Dear Customer,
+        </p>
+
+        <p
+          style="
+            font-size: 15px; /* Font size for the body text */
+            line-height: 1.6; /* Line height for readability */
+            margin-top: 10px; /* Margin above the body text */
+            color: #333; /* Darker text color for readability */
+          "
+        >
+          Thank you, <b>$email</b>, for your recent subscription to Norton
+          LifeLock. We would like to confirm that your one-year subscription has
+          been successfully auto-renewed and the payment has been deducted from
+          your account. Here are the details:
+        </p>
+
+        <ul
+          style="
+            font-size: 17px; /* Font size for the list items */
+            margin-top: 10px; /* Margin above the list */
+            color: #333; /* Darker text color for readability */
+            font-weight: bold;
+          "
+        >
+          <li>Subscription: Norton LifeLock 1 Year</li>
+          <li>Transaction Amount: $3$charge.00</li>
+        </ul>
+
+        <p
+          style="
+            font-size: 15px; /* Font size for the body text */
+            line-height: 1.6; /* Line height for readability */
+            margin-top: 10px; /* Margin above the body text */
+            color: #333; /* Darker text color for readability */
+          "
+        >
+          If you have any questions regarding this transaction or need further
+          assistance, please don't hesitate to contact us by connecting with the
+          Toll free below:
+        </p>
+
+        <p
+          style="
+            font-size: 15px; /* Font size for the closing */
+            margin-top: 15px; /* Margin above the closing */
+            color: #333; /* Darker text color for readability */
+          "
+        >
+          Thank you for using Norton LifeLock for your protection needs. We
+          appreciate your business.
+        </p>
+
+        <p
+          style="
+            font-size: 18px; /* Font size for the support number */
+            font-weight: bold; /* Bold text for emphasis */
+            color: #242e39; /* Norton Yellow for support number */
+            margin-top: 15px; /* Margin above the support number */
+          "
+        >
+          Customer Support: $tfn
+        </p>
+      </div>
+
+      <div
+        style="
+          font-family: Arial, sans-serif;
+          font-size: 14px;
+          color: #666;
+          text-align: center;
+          margin-top: 20px;
+        "
+      >
+        <div
+          style="
+            border-top: 1px solid #ccc;
+            padding-top: 10px;
+            margin-bottom: 10px;
+          "
+        >
+          <div
+            class="support-number"
+            style="font-weight: bold; color: #242e39; margin-bottom: 5px"
+          >
+            $tfn
+          </div>
+        </div>
+
+        <div style="margin-top: 10px; color: #999; line-height: 1.4">
+          This email was sent based on your subscription with Norton LifeLock.
+          For questions or concerns about this email, please contact customer
+          service.
+
+          <p style="margin-top: 8px">
+            Norton LifeLock, Inc. &copy; 2024. All rights reserved.
+            <br />
+            <sub>$digi_no$transaction_id</sub>
+          </p>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
