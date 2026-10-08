@@ -1,0 +1,31 @@
+amazon Order Confirmation	Order  No : # {randnum(4)}-{randnum(6)}
+Hello, 
+Thank you for your order. We'll send a confirmation when your items ship.
+Order Placed
+07 October, 2026	 	
+Payment Method
+Visa ending in {randnum(5)}
+Ship To
+Building Number: 3272 Street Name: Hill St Street Address: Office Building Apartment/Flat: Apt 197 State: AK City: Oklahoma City	 	
+Billing Address
+Same as shipping address
+Order Details
+Product	Qty	Price
+Apple iPhone 15 Pro Max (256GB)
+Natural Titanium | A17 Pro Chip | USB-C
+1	599.00
+
+
+
+Bose QuietComfort Ultra Earbuds
+World-Class Noise Cancellation | Black
+1	99.00
+Item Subtotal	USD 698
+Shipping & Handling	USD 12.00
+Estimated Tax	USD 7.64
+Order Total	USD 717.64
+Need help? Visit Your Orders or Customer Service
+
+1 (813) 934 5704
+This invoice was sent to you because you made a purchase on Amazon.
+© 1998–2026, Amazon.com, Inc. or its affiliates. All rights reserved.
